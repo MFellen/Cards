@@ -11,8 +11,8 @@ public class StudyManager {
     private int correctAnswers = 0;
     private int incorrectAnswers = 0;
 
-    public StudyManager(List<Card> fullDeck) {
-        this.dailyStudySet = CardData.getDailyStudySet(fullDeck, 10);
+    public StudyManager() {
+        this.dailyStudySet = CardData.generateStudySet();
     }
 
     public Card getCurrentCard() {

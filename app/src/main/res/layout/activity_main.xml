@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <CalendarView
+    <!-- CalendarView -->
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:mcv_showOtherDates="none"
         android:layout_marginBottom="16dp" />
 
+
+    <!-- Image for Card -->
     <ImageView
         android:id="@+id/cardImage"
         android:layout_width="match_parent"
@@ -20,6 +26,7 @@
         android:visibility="gone"
         android:layout_marginBottom="16dp" />
 
+    <!-- Question Text -->
     <TextView
         android:id="@+id/questionText"
         android:layout_width="match_parent"
@@ -29,14 +36,7 @@
         android:gravity="center"
         android:padding="16dp" />
 
-    <Button
-        android:id="@+id/showAnswerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Answer"
-        android:layout_gravity="center"
-        android:padding="16dp" />
-
+    <!-- Answer Text -->
     <TextView
         android:id="@+id/answerText"
         android:layout_width="match_parent"
@@ -47,6 +47,16 @@
         android:padding="16dp"
         android:visibility="gone" />
 
+    <!-- Show Answer Button -->
+    <Button
+        android:id="@+id/showAnswerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Answer"
+        android:layout_gravity="center"
+        android:padding="16dp" />
+
+    <!-- Buttons for Correct and Incorrect -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,22 +79,14 @@
             android:layout_margin="8dp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/progressText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Progress"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="16dp" />
-
-    <TextView
-        android:id="@+id/scoreText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Score"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="16dp" />
+<!--    &lt;!&ndash; ListView for Study Set &ndash;&gt;-->
+<!--    <ListView-->
+<!--        android:id="@+id/studySetListView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:divider="@android:color/darker_gray"-->
+<!--        android:dividerHeight="1dp"-->
+<!--        android:layout_marginTop="16dp" />-->
 </LinearLayout>
+
 
