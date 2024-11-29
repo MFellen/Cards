@@ -1,6 +1,7 @@
 package com.soen357.cards;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.soen357.cards.data.Card;
 import com.soen357.cards.data.CardData;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,10 +93,10 @@ public class MainActivity extends Activity {
 
         // Show answer button functionality
         showAnswerButton.setOnClickListener(v -> {
-            showAnswerButton.setVisibility(View.GONE); // Hide
+            showAnswerButton.setVisibility(View.GONE); // Hide Answer button
             Card currentCard = currentStudySet.get(currentCardIndex);
             answerText.setText(currentCard.getAnswer());
-            answerText.setVisibility(View.VISIBLE); // Show
+            answerText.setVisibility(View.VISIBLE); // Show Answer and Correct/Incorrect buttons
             correctButton.setVisibility(View.VISIBLE);
             incorrectButton.setVisibility(View.VISIBLE);
         });
@@ -114,23 +116,44 @@ public class MainActivity extends Activity {
         // Calendar selection functionality
         calendarView.setOnDateChangedListener((widget, date, selected) -> {
             String selectedDate = date.getDay() + "/" + (date.getMonth() + 1) + "/" + date.getYear();
+            CalendarDay todaydate = CalendarDay.today();
             calendarView.removeDecorators();
             highlightDates();
+            // Load the study set for the selected date
             if (!selectedDate.equals(currentStudyDate)) {
-                // Load the study set for the selected date
-                currentStudyDate = selectedDate;
-                loadStudySetForDate(selectedDate);
+                if (date.isAfter(todaydate)) { // Check if the selected date is in the future
+                    // Show confirmation dialog for spaced repetition
+                    new AlertDialog.Builder(this)
+                            .setTitle("Future Date")
+                            .setMessage("You selected a future date. This may mess with the spaced repetition algorithm. Do you want to switch?")
+                            .setPositiveButton("Yes", (dialog, which) -> {
+                                // User confirmed, switch to the selected date
+                                currentStudyDate = date.getDay() + "/" + (date.getMonth() + 1) + "/" + date.getYear();
+                                loadStudySetForDate(currentStudyDate); // Load study set for the selected date
+                            })
+                            .setNegativeButton("No", (dialog, which) -> {
+                                // User canceled, reset to the current date
+                                calendarView.setDateSelected(date, false); // Unselect the future date
+                                calendarView.setDateSelected(CalendarDay.from(todaydate.getYear(), todaydate.getMonth(), todaydate.getDay()), true); // Keep today's date selected
+                            })
+                            .setCancelable(false)
+                            .show();
+                } else {
+                    // If the date is not in the future, just switch directly
+                    currentStudyDate = date.getDay() + "/" + (date.getMonth() + 1) + "/" + date.getYear();
+                    loadStudySetForDate(currentStudyDate);
+                }
             }
         });
     }
 
     private void moveToNextCard() {
         currentCardIndex++;
-        showAnswerButton.setVisibility(View.VISIBLE);
+        showAnswerButton.setVisibility(View.VISIBLE); // Show Answer button and hide others
         answerText.setVisibility(View.GONE);
         correctButton.setVisibility(View.GONE);
         incorrectButton.setVisibility(View.GONE);
-        if (currentCardIndex >= currentStudySet.size()) {
+        if (currentCardIndex >= currentStudySet.size()) { // If all cards are completed
             markDailyStudyComplete(currentStudyDate);
             highlightDates();
             showCompletionMessage();
@@ -140,7 +163,7 @@ public class MainActivity extends Activity {
     }
 
 
-    private void showCard() {
+    private void showCard() { // Show individual cards
         if (currentStudySet.isEmpty()) {
             questionText.setText("No cards available.");
             answerText.setVisibility(View.GONE);
@@ -231,7 +254,7 @@ public class MainActivity extends Activity {
         // Set uncompleted dates as RED
         HashSet<CalendarDay> uncompleted = new HashSet<>();
         java.util.Calendar calendar = java.util.Calendar.getInstance();
-        // This marks the last 4 days as uncompleted by default
+        // This marks the last 4 days as uncompleted by default for demo purposes
         for (int i = 1; i <= 4; i++) {
             calendar.add(java.util.Calendar.DAY_OF_YEAR, -1);
             CalendarDay pastDay = CalendarDay.from(calendar);
@@ -242,7 +265,7 @@ public class MainActivity extends Activity {
         }
         int red = ContextCompat.getColor(this, R.color.red);
         calendarView.addDecorator(new EventDecorator(red, uncompleted));
-        calendarView.addDecorator(new DayViewDecorator() {
+        calendarView.addDecorator(new DayViewDecorator() { // This keeps today date in focus for the user
             @Override
             public boolean shouldDecorate(CalendarDay day) {
                 return day.equals(today);
