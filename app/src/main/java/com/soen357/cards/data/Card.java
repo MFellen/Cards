@@ -1,14 +1,16 @@
 package com.soen357.cards.data;
 
+import android.text.SpannableString;
+
 public class Card {
-    private String question;
-    private String answer;
+    private SpannableString question;
+    private SpannableString answer;
     private int imageResId; // Resource ID of the image
     private int correctCount;
     private int incorrectCount;
 
     // Constructor for cards without images
-    public Card(String question, String answer) {
+    public Card(SpannableString question, SpannableString answer) {
         this.question = question;
         this.answer = answer;
         this.imageResId = -1; // No image
@@ -17,17 +19,17 @@ public class Card {
     }
 
     // Constructor for cards with images
-    public Card(String question, String answer, int imageResId) {
+    public Card(SpannableString question, SpannableString answer, int imageResId) {
         this.question = question;
         this.answer = answer;
         this.imageResId = imageResId;
     }
 
-    public String getQuestion() {
+    public SpannableString getQuestion() {
         return question;
     }
 
-    public String getAnswer() {
+    public SpannableString getAnswer() {
         return answer;
     }
 

@@ -125,7 +125,7 @@ public class MainActivity extends Activity {
                     // Show confirmation dialog for spaced repetition
                     new AlertDialog.Builder(this)
                             .setTitle("Future Date")
-                            .setMessage("You selected a future date. This may mess with the spaced repetition algorithm. Do you want to switch?")
+                            .setMessage("You selected a future date. Doing this study set may mess with the spaced repetition algorithm. Do you want to continue?")
                             .setPositiveButton("Yes", (dialog, which) -> {
                                 // User confirmed, switch to the selected date
                                 currentStudyDate = date.getDay() + "/" + (date.getMonth() + 1) + "/" + date.getYear();
@@ -199,7 +199,7 @@ public class MainActivity extends Activity {
     private void showCompletionMessage() {
         CalendarDay selectedDate = calendarView.getSelectedDate();
         CalendarDay today = CalendarDay.today();
-        if (selectedDate.equals(today)) {
+        if (selectedDate == null || selectedDate.equals(today)) {
             questionText.setText("Daily study set complete! Come back tomorrow.");
         }
         else {
@@ -208,6 +208,8 @@ public class MainActivity extends Activity {
         showAnswerButton.setVisibility(View.GONE);
         correctButton.setVisibility(View.GONE);
         incorrectButton.setVisibility(View.GONE);
+        answerText.setVisibility(View.GONE);
+        cardImage.setVisibility(View.GONE);
     }
 
     private void loadStudySetForDate(String date) {
