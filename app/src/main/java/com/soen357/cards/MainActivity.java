@@ -2,6 +2,8 @@ package com.soen357.cards;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -23,6 +27,7 @@ import com.soen357.cards.ui.EventDecorator;
 import com.soen357.cards.data.Card;
 import com.soen357.cards.data.CardData;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
@@ -30,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 
@@ -41,10 +47,13 @@ public class MainActivity extends Activity {
     private List<Card> currentStudySet;
     private int currentCardIndex = 0;
 
-    private HashMap<String, Boolean> completedDates; // Tracks completion status by date
+    private Map<String, Boolean> completedDates; // Tracks completion status by date
     private String todayDate;
     private String currentStudyDate;
     private boolean isCalendarVisible;
+
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
 
     @Override
@@ -63,7 +72,12 @@ public class MainActivity extends Activity {
         correctButton = findViewById(R.id.correctButton);
         incorrectButton = findViewById(R.id.incorrectButton);
 
-        completedDates = new HashMap<>();
+        // Using sharedPreferences for storage as the app needs to be accessible offline
+        gson = new Gson();
+        sharedPreferences = getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE);
+
+
+        completedDates = loadCompletedDates();
         todayDate = getTodayDate();
         currentStudyDate = todayDate;
 
@@ -193,6 +207,7 @@ public class MainActivity extends Activity {
 
     private void markDailyStudyComplete(String date) {
         completedDates.put(date, true);
+        saveCompletedDates();
     }
 
 
@@ -291,5 +306,18 @@ public class MainActivity extends Activity {
 
     private String getTodayDate() {
         return new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+    }
+
+    private Map<String, Boolean> loadCompletedDates() {
+        String json = sharedPreferences.getString("completedDates", "{}");
+        Type type = new TypeToken<Map<String, Boolean>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    private void saveCompletedDates() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String json = gson.toJson(completedDates);
+        editor.putString("completedDates", json);
+        editor.apply();
     }
 }
