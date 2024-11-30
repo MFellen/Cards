@@ -1,92 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- CalendarView -->
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mcv_showOtherDates="none"
-        android:layout_marginBottom="16dp" />
-
-
-    <!-- Image for Card -->
-    <ImageView
-        android:id="@+id/cardImage"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Question Text -->
-    <TextView
-        android:id="@+id/questionText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Question"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:padding="16dp" />
-
-    <!-- Answer Text -->
-    <TextView
-        android:id="@+id/answerText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="20sp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:visibility="gone" />
-
-    <!-- Show Answer Button -->
-    <Button
-        android:id="@+id/showAnswerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Answer"
-        android:layout_gravity="center"
-        android:padding="16dp" />
-
-    <!-- Buttons for Correct and Incorrect -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:paddingTop="16dp">
+        android:orientation="vertical">
 
+        <!-- CalendarView -->
         <Button
-            android:id="@+id/correctButton"
+            android:id="@+id/showCalendarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_blue"
+            android:background="@drawable/rounded_button"
+            android:text="📅 View Progress" />
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:mcv_showOtherDates="other_months" />
+
+        <!-- Image for Card -->
+        <ImageView
+            android:id="@+id/cardImage"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <!-- Question Text -->
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Question"
+            android:textSize="24sp" />
+
+        <!-- Answer Text -->
+        <TextView
+            android:id="@+id/answerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text=""
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <!-- Show Answer Button -->
+        <Button
+            android:id="@+id/showAnswerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Correct"
-            android:layout_margin="8dp" />
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/teal_200"
+            android:text="Show Answer" />
 
-        <Button
-            android:id="@+id/incorrectButton"
-            android:layout_width="wrap_content"
+        <!-- Buttons for Correct and Incorrect -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Incorrect"
-            android:layout_margin="8dp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+
+            <Button
+                android:id="@+id/correctButton"
+                android:layout_width="142dp"
+                android:layout_height="91dp"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/light_green"
+                android:drawableLeft="@drawable/check"
+                android:paddingLeft="8dp"
+                android:text="Correct"
+                android:background="@drawable/rounded_button"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/incorrectButton"
+                android:layout_width="142dp"
+                android:layout_height="91dp"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/light_red"
+                android:drawableLeft="@drawable/cross"
+                android:drawablePadding="8dp"
+                android:paddingLeft="8dp"
+                android:text="Incorrect"
+                android:background="@drawable/rounded_button"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-<!--    &lt;!&ndash; ListView for Study Set &ndash;&gt;-->
-<!--    <ListView-->
-<!--        android:id="@+id/studySetListView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:divider="@android:color/darker_gray"-->
-<!--        android:dividerHeight="1dp"-->
-<!--        android:layout_marginTop="16dp" />-->
-</LinearLayout>
-
-
+</ScrollView>
